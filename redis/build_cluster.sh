@@ -38,4 +38,4 @@ docker run -i \
 
 # list nodes of the configured cluster from the first node (one of the masters)
 echo "State of the cluster:"
-docker exec -it ${NODE_NAME_PREFIX}0 redis-cli -p 6379 cluster nodes
+docker exec -it ${NODE_NAME_PREFIX}0 redis-cli -p $REDIS_PORT cluster nodes
