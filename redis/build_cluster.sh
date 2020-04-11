@@ -10,6 +10,7 @@ docker network inspect $CLUSTER_NETWORK >/dev/null 2>&1 || docker network create
 docker pull redis
 
 declare -a IP_LIST
+
 # starts the container for each node in the cluster
 for ((i=0; i<$NUMBER_OF_NODES; ++i))
 do
@@ -27,5 +28,14 @@ do
     IP_LIST[$i]=$NODE_IP:$REDIS_PORT
 done
 
-# starts the cluster itself, with 1 replica node for each master (by shard)
-docker run -i --rm --net $CLUSTER_NETWORK redis redis-cli --cluster create ${IP_LIST[*]} --cluster-replicas 1
+# starts the cluster itself
+docker run -i \
+    --name $REDIS_CONTROL_NAME \
+    --net $CLUSTER_NETWORK \
+    redis redis-cli \
+    --cluster create ${IP_LIST[*]} \
+    --cluster-replicas $NUMBER_OF_REPLICAS
+
+# list nodes of the configured cluster from the first node (one of the masters)
+echo "State of the cluster:"
+docker exec -it ${NODE_NAME_PREFIX}0 redis-cli -p 6379 cluster nodes

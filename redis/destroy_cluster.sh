@@ -10,6 +10,10 @@ do
     docker rm --force $NODE_NAME_PREFIX$i
 done
 
+# removes the container used to start the cluster
+echo "Removing the control container"
+docker rm --force $REDIS_CONTROL_NAME
+
 # removes the network
 echo "Removing the cluster network..."
 docker network rm $CLUSTER_NETWORK
