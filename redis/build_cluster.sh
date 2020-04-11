@@ -15,13 +15,13 @@ for ((i=0; i<$NUMBER_OF_NODES; ++i))
 do
     NAME=$NODE_NAME_PREFIX$i
     echo "Creating node ${NAME}..."
-    
+
     docker run -d \
         -v $NODE_CONFIG_FILE_PATH:$REDIS_CONFIG_FILE_PATH \
         --name $NAME \
         --net $CLUSTER_NETWORK \
         redis redis-server $REDIS_CONFIG_FILE_PATH
-    
+
     # Captures the IP of the node
     NODE_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $NAME)
     IP_LIST[$i]=$NODE_IP:$REDIS_PORT
