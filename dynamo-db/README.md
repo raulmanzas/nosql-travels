@@ -9,4 +9,4 @@ Learn the concepts and come back to practice!
 
 Recommended tools:
 
-* ![NoSQL Workbench: GUI for data modelling focused on DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.settingup.html)
+* [NoSQL Workbench: GUI for data modelling focused on DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.settingup.html)
