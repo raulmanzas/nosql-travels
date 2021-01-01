@@ -11,7 +11,7 @@ Recommended tools:
 
 * [NoSQL Workbench: GUI for data modelling focused on DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.settingup.html)
 
-----
+
 ## Kotlin examples
 The sample functions described below were tested on the following AWS SDK version:
 
@@ -39,6 +39,7 @@ val client = DynamoDB(clientBuilder)
 ```
 
 ### Working with tables
+---
 
 Listing existent tables on DynamoDB:
 ```kotlin
@@ -69,7 +70,9 @@ Deleting a table:
 client.getTable(TABLE_NAME).delete()
 ```
 
+
 ### Working with items
+---
 
 Inserting data:
 ```kotlin
@@ -82,7 +85,7 @@ val item = Item()
 client.getTable(TABLE_NAME).putItem(item)
 ```
 
-Retrieving an item using the exact PK and SK combination:
+Retrieving a item using the exact PK and SK combination:
 ```kotlin
 val item = client.getTable(TABLE_NAME)
     .getItem(PARTITION_KEY_NAME, "pk exact value", SORT_KEY_NAME, "sk exact value")
