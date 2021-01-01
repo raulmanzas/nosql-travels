@@ -38,6 +38,8 @@ val clientBuilder = AmazonDynamoDBClientBuilder.standard()
 val client = DynamoDB(clientBuilder)
 ```
 
+### Working with tables
+
 Listing existent tables on DynamoDB:
 ```kotlin
 val results = client.listTables()
@@ -67,6 +69,8 @@ Deleting a table:
 client.getTable(TABLE_NAME).delete()
 ```
 
+### Working with items
+
 Inserting data:
 ```kotlin
 val item = Item()
@@ -84,15 +88,15 @@ val item = client.getTable(TABLE_NAME)
     .getItem(PARTITION_KEY_NAME, "pk exact value", SORT_KEY_NAME, "sk exact value")
 ```
 
-Retrieving all itens filtering by partition key only:
+Retrieving all items filtering by partition key only:
 ```kotlin
-val itens = client.getTable(TABLE_NAME).query(
+val items = client.getTable(TABLE_NAME).query(
     KeyAttribute(PARTITION_KEY_NAME, "pk exact value")
 )
 ```
-Retrieving all itens filtering by partition key and the beginning of the sort key:
+Retrieving all items filtering by partition key and the beginning of the sort key:
 ```Kotlin
-val itens = client.getTable(TABLE_NAME).query(
+val items = client.getTable(TABLE_NAME).query(
     KeyAttribute(PARTITION_KEY_NAME, "pk exact value"),
     RangeKeyCondition(SORT_KEY).beginsWith("some sk prefix")
 )
