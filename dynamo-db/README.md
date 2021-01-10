@@ -11,7 +11,6 @@ Recommended tools:
 
 * [NoSQL Workbench: GUI for data modelling focused on DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/workbench.settingup.html)
 
-
 ## Kotlin examples
 The sample functions described below were tested on the following AWS SDK version:
 
@@ -28,6 +27,8 @@ const val PARTITION_KEY_NAME = "pk"
 const val SORT_KEY_NAME = "sk"
 ```
 
+### Low level api examples
+
 Creating a DynamoDB client:
 ```kotlin
 val clientBuilder = AmazonDynamoDBClientBuilder.standard()
@@ -38,7 +39,7 @@ val clientBuilder = AmazonDynamoDBClientBuilder.standard()
 val client = DynamoDB(clientBuilder)
 ```
 
-### Working with tables
+#### Working with tables
 ---
 
 Listing existent tables on DynamoDB:
@@ -71,7 +72,7 @@ client.getTable(TABLE_NAME).delete()
 ```
 
 
-### Working with items
+#### Working with items
 ---
 
 Inserting data:
@@ -105,3 +106,40 @@ val items = client.getTable(TABLE_NAME).query(
 )
 ```
 
+### DynamoDBMapper examples
+For the examples below, consider the following model/entity/item:
+```kotlin
+@DynamoDBTable(tableName = "people")
+data class Person(
+    @DynamoDBHashKey(attributeName = "pk")
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.S)
+    var id: UUID = UUID.randomUUID(),
+
+    var name: String = "",
+
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.N)
+    var age: Number = 0,
+
+    var email: String = "",
+
+    @DynamoDBAttribute(attributeName = "country")
+    var currentCountry: String = ""
+)
+```
+Note that the @DynamoDBTyped annotation is necessary for any of the non supported types. [You can see the list of supported types here](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBMapper.DataTypes.html).
+
+---
+
+Building the mapper
+```kotlin
+val client = AmazonDynamoDBClientBuilder.standard()
+    .withRegion(AWS_REGION)
+    .build()
+val mapper = DynamoDBMapper(client)
+```
+
+Insertind data:
+```kotlin
+val person = Person(name = "Person name", age = 40, email = "test@test.test", currentCountry = "Brazil")
+mapper.save(person)
+```
